@@ -16,7 +16,7 @@ A班要求完成`sjtu::priority_queue`、`sjtu::deque`和`sjtu::map`，B班要�
 - `sjtu::priority_queue`要求以最高$O(\log n)$的时间复杂度实现合并操作。
 - `sjtu::deque`要求支持以不超过$O(\sqrt n)$时间完成**任意位置**的插入和删除，但随机访问的时间复杂度要求降低为$O(\sqrt n)$。
 - `sjtu::deque`的迭代器在首尾操作后也会失效。
-- `sjtu::map`的实现B班要求平衡化（可使用AVL树、红黑树、AA树等），A班要求使用红黑树完成。
+- `sjtu::map`的实现B班要求平衡化，A班要求使用红黑树完成。
 
 因此，如果对内容有任何疑问，可以参考STL，或是在这里提出issue，谢谢！
 
