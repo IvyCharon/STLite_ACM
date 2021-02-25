@@ -1,0 +1,144 @@
+{
+    "Groups": [
+        {
+            "GroupID": 1,
+            "GroupName": "one",
+            "GroupScore": 15,
+            "TestPoints": [
+                1
+            ]
+        },
+        {
+            "GroupID": 2,
+            "GroupName": "two",
+            "GroupScore": 15,
+            "TestPoints": [
+                2
+            ]
+        },
+        {
+            "GroupID": 3,
+            "GroupName": "three",
+            "GroupScore": 15,
+            "TestPoints": [
+                3
+            ]
+        },
+        {
+            "GroupID": 4,
+            "GroupName": "four",
+            "GroupScore": 15,
+            "TestPoints": [
+                4
+            ]
+        },
+        {
+            "GroupID": 5,
+            "GroupName": "one.memcheck",
+            "GroupScore": 10,
+            "TestPoints": [
+                5
+            ]
+        },
+        {
+            "GroupID": 6,
+            "GroupName": "two.memcheck",
+            "GroupScore": 10,
+            "TestPoints": [
+                6
+            ]
+        },
+        {
+            "GroupID": 7,
+            "GroupName": "three.memcheck",
+            "GroupScore": 10,
+            "TestPoints": [
+                7
+            ]
+        },
+        {
+            "GroupID": 8,
+            "GroupName": "four.memcheck",
+            "GroupScore": 10,
+            "TestPoints": [
+                8
+            ]
+        }
+    ],
+    "Details": [
+        {
+            "ID": 1,
+            "Dependency": 0,
+            "TimeLimit": 1000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": false
+        },
+        {
+            "ID": 2,
+            "Dependency": 0,
+            "TimeLimit": 10000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": false
+        },
+        {
+            "ID": 3,
+            "Dependency": 0,
+            "TimeLimit": 1000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": false
+        },
+        {
+            "ID": 4,
+            "Dependency": 0,
+            "TimeLimit": 1000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": false
+        },
+        {
+            "ID": 5,
+            "Dependency": 1,
+            "TimeLimit": 1000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": true
+        },
+        {
+            "ID": 6,
+            "Dependency": 2,
+            "TimeLimit": 60000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": true
+        },
+        {
+            "ID": 7,
+            "Dependency": 3,
+            "TimeLimit": 1000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": true
+        },
+        {
+            "ID": 8,
+            "Dependency": 4,
+            "TimeLimit": 3000,
+            "MemoryLimit": 536870912,
+            "DiskLimit": 0,
+            "ValgrindTestOn": true
+        }
+    ],
+    "CompileTimeLimit": 10000,
+    "SPJ": 2,
+    "Scorer": 0,
+    "SupportedFiles": [
+        "utility.hpp",
+        "exceptions.hpp",
+        "class-bint.hpp",
+        "class-integer.hpp",
+        "class-matrix.hpp"
+    ]
+}
