@@ -35,9 +35,9 @@ A班要求完成`sjtu::priority_queue`、`sjtu::deque`和`sjtu::map`，B班要�
 
 `priority_queue`(A)/`vector`(B)：3月10日（第三周周三）23:00前
 
-`deque`：3月31日（第六周周三）23:00前
+`deque`：4月4日（第六周周日）23:00前
 
-`map`：4月28日（第十周周三）23:00前
+`map`：5月2日（第十周周日）23:00前
 
 ## 迟交惩罚
 
