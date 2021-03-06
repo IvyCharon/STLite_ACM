@@ -29,6 +29,12 @@ A班要求完成`sjtu::priority_queue`、`sjtu::deque`和`sjtu::map`，B班要�
 
 ## 分数构成
 
+三个作业分数占比为：
+
+-  vector/priority_queue：4分
+- deque：5分
+- map：6分
+
 在 OJ 上通过测试数据可获得 80% 的分数，code review 占 20% 的分数。
 
 ## 截止日期
