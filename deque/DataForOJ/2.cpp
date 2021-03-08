@@ -1,3 +1,4 @@
+// Modified by battlin
 // provided by your new friend Mercy. Enjoy!
 
 #include <iostream>
@@ -12,7 +13,6 @@
 #include "deque.hpp"
 
 std::default_random_engine randnum(time(NULL));
-
 static const int MAX_N = 15000;
 
 template <typename Ans, typename Test>
@@ -59,9 +59,9 @@ bool pushTest() {
         int x = randnum();
         switch (randnum() % 2) {
             case 0: deq.push_front(x); ans.push_front(x);
-                    break;
+                break;
             case 1: deq.push_back(x);  ans.push_back(x);
-                    break;
+                break;
         }
     }
 
@@ -77,9 +77,9 @@ bool popTest() {
     for (int i = 0; i < MAX_N / 2; i++) {
         switch (randnum() % 2) {
             case 0: deq.pop_front(); ans.pop_front();
-                    break;
+                break;
             case 1: deq.pop_back();  ans.pop_back();
-                    break;
+                break;
         }
     }
 
@@ -96,11 +96,11 @@ bool insertTest() {
 
         switch (randnum() % 2) {
             case 0: deq.insert(deq.begin() + pos, x);
-                    ans.insert(ans.begin() + pos, x);
-                    break;
+                ans.insert(ans.begin() + pos, x);
+                break;
             case 1: deq.insert(deq.end() - pos, x);
-                    ans.insert(ans.end() - pos, x);
-                    break;
+                ans.insert(ans.end() - pos, x);
+                break;
         }
     }
 
@@ -125,9 +125,9 @@ bool iteratorTest() {
     for (int i = 0; i < MAX_N; i++) {
         switch(randnum() % 2) {
             case 0: ansIter++; myIter++;
-                    break;
+                break;
             case 1: ansIter--; myIter--;
-                    break;
+                break;
         }
 
         if (*ansIter != *myIter)
@@ -216,11 +216,11 @@ bool eraseTest() {
 
         switch (randnum() % 2) {
             case 0: deq.erase(deq.begin() + pos);
-                    ans.erase(ans.begin() + pos);
-                    break;
+                ans.erase(ans.begin() + pos);
+                break;
             case 1: deq.erase(deq.end() - 1 - pos);
-                    ans.erase(ans.end() - 1 - pos);
-                    break;
+                ans.erase(ans.end() - 1 - pos);
+                break;
         }
     }
 
@@ -311,21 +311,21 @@ bool memoryTest() {
         int index = randnum() % ans.size();
         switch(randnum() % 6) {
             case 0: ans.push_back(DynamicType(&ansCounter));
-                    deq.push_back(DynamicType(&myCounter));
-                    break;
+                deq.push_back(DynamicType(&myCounter));
+                break;
             case 1: ans.push_front(DynamicType(&ansCounter));
-                    deq.push_front(DynamicType(&myCounter));
-                    break;
+                deq.push_front(DynamicType(&myCounter));
+                break;
             case 2: ans.pop_back(); deq.pop_back();
-                    break;
+                break;
             case 3: ans.pop_front(); deq.pop_front();
-                    break;
+                break;
             case 4: ans.insert(ans.begin() + index, DynamicType(&ansCounter));
-                    deq.insert(deq.begin() + index, DynamicType(&myCounter));
-                    break;
+                deq.insert(deq.begin() + index, DynamicType(&myCounter));
+                break;
             case 5: ans.erase(ans.begin() + index);
-                    deq.erase(deq.begin() + index);
-                    break;
+                deq.erase(deq.begin() + index);
+                break;
             default : break;
         }
 
@@ -366,17 +366,17 @@ bool dfs(int deep, std::deque<T> ans, sjtu::deque<T> deq) {
     int x = randnum();
     switch (randnum() % 5) {
         case 0: ans.insert(++ans.begin(), x);
-                deq.insert(++deq.begin(), x);
-                break;
+            deq.insert(++deq.begin(), x);
+            break;
         case 1: ans.erase(--ans.end());
-                deq.erase(--deq.end());
-                break;
+            deq.erase(--deq.end());
+            break;
         case 2: *(ans.begin() - (-5)) = x;
-                *(deq.begin() - (-5)) = x;
-                break;
+            *(deq.begin() - (-5)) = x;
+            break;
         case 3: *(ans.end() + (-5)) = x;
-                *(deq.end() + (-5)) = x;
-                break;
+            *(deq.end() + (-5)) = x;
+            break;
     }
 
     if (isEqual(ans, deq) && ansCounter == myCounter)
@@ -392,27 +392,27 @@ bool dfs2(int deep, std::deque<DynamicType> ans, sjtu::deque<DynamicType> deq) {
     DynamicType tmp(&noUseCounter), tmp2(&noUseCounter);
     switch (randnum() % 6) {
         case 0: ans.insert(++ans.begin(), DynamicType(&ansCounter));
-                deq.insert(++deq.begin(), DynamicType(&myCounter));
-                break;
+            deq.insert(++deq.begin(), DynamicType(&myCounter));
+            break;
         case 1: ans.erase(--ans.end());
-                deq.erase(--deq.end());
-                break;
+            deq.erase(--deq.end());
+            break;
         case 2: *(ans.begin() - (-5)) = DynamicType(&ansCounter);
-                *(deq.begin() - (-5)) = DynamicType(&myCounter);
-                break;
+            *(deq.begin() - (-5)) = DynamicType(&myCounter);
+            break;
         case 3: *(ans.end() + (-5)) = DynamicType(&ansCounter);
-                *(deq.end() + (-5)) = DynamicType(&myCounter);
-                break;
+            *(deq.end() + (-5)) = DynamicType(&myCounter);
+            break;
         case 4: {
-                    int a = randnum() % ans.size(), b = randnum() % ans.size();
-                    tmp = deq[a]; deq[a] = deq[b]; deq[b] = tmp;
-                    tmp = ans[a]; ans[a] = ans[b]; ans[b] = tmp;
-                    tmp = tmp2;
-                }
-                break;
+            int a = randnum() % ans.size(), b = randnum() % ans.size();
+            tmp = deq[a]; deq[a] = deq[b]; deq[b] = tmp;
+            tmp = ans[a]; ans[a] = ans[b]; ans[b] = tmp;
+            tmp = tmp2;
+        }
+            break;
         case 5: (*ans.begin()->pct)++;
-                (*deq.begin()->pct)++;
-                break;
+            (*deq.begin()->pct)++;
+            break;
     }
 
     if (isEqual(ans, deq) && ansCounter == myCounter)
@@ -427,7 +427,7 @@ bool nomercyTest() {
     {
         std::deque<int> ans;
         sjtu::deque<int> deq;
-        randnumFill(ans, deq, 10000);
+        randnumFill(ans, deq, 100000);
         if (!dfs(19960904, ans, deq))
             return false;
 
@@ -445,15 +445,15 @@ bool nomercyTest() {
 
 int main() {
     bool (*testFunc[])()= {
-        pushTest, popTest, insertTest, iteratorTest,
-        eraseTest, copyAndClearTest, memoryTest,
-        nomercyTest,
+            pushTest, popTest, insertTest, iteratorTest,
+            eraseTest, copyAndClearTest, memoryTest,
+            nomercyTest,
     };
 
     const char *testMessage[] = {
-        "Testing push...", "Testing pop...", "Testing insert...", "Testing iterator...",
-        "Testing erase...", "Testing copy and clear...", "Testing memory...",
-        "Final test without mercy...",
+            "Testing push...", "Testing pop...", "Testing insert...", "Testing iterator...",
+            "Testing erase...", "Testing copy and clear...", "Testing memory...",
+            "Final test without mercy...",
     };
 
     bool error = false;
@@ -474,4 +474,6 @@ int main() {
 
     return 0;
 }
+
+
 

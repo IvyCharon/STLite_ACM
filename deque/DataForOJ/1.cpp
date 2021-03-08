@@ -12,7 +12,7 @@ So if all tests are passed, feel free to enhance your performance! :)
 #include <iostream>
 #include <vector>
 #include <deque>
-#include "deque.hpp"
+#include "src.hpp"
 
 long long randNum(long long x,long long maxNum){
     x = (x * 10007) % maxNum;
@@ -25,8 +25,8 @@ void error(){
     exit(0);
 }
 
-void TestInteger(){
-    std::cout << "Test 1 : Test for classes without default constructor...";
+bool TestInteger(){
+    //std::cout << "Test 1 : Test for classes without default constructor...";
     sjtu::deque<int> dInt;
     std::vector<int> vInt;
     for (int i = 0; i < N; ++i) {
@@ -35,12 +35,14 @@ void TestInteger(){
     }
     for (int i = 0; i < N; ++i) {
         if (vInt[i] != dInt[i])
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestIntegeragain(){
-    std::cout << "Test 2 : Test for classes without default constructor but with reversing...";
+bool TestIntegeragain(){
+    //std::cout << "Test 2 : Test for classes without default constructor but with reversing...";
     sjtu::deque<int> dInt;
     std::vector<int> vInt;
     for (int i = 0; i < N; ++i) {
@@ -49,12 +51,14 @@ void TestIntegeragain(){
     }
     for (int i = 0; i < N; ++i) {
         if (vInt[i] != dInt[i])
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestMatrix(){
-    std::cout << "Test 3 : Test for Matrix, a class with dynamic members...";
+bool TestMatrix(){
+    //std::cout << "Test 3 : Test for Matrix, a class with dynamic members...";
     sjtu::deque<Diamond::Matrix<double>> dM;
     std::vector<Diamond::Matrix<double>> vM;
     for (int i = 0; i < N; ++i) {
@@ -63,12 +67,14 @@ void TestMatrix(){
     }
     for (int i = 0; i < N; ++i) {
         if (!(vM[i] == dM[i]))
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestBint(){
-    std::cout << "Test 4 : Test for Bint...";
+bool TestBint(){
+    //std::cout << "Test 4 : Test for Bint...";
     sjtu::deque<Util::Bint> dBint;
     std::vector<Util::Bint> vBint;
     for (long long i = 1LL << 60; i < (1LL << 60) + N; ++i) {
@@ -77,12 +83,14 @@ void TestBint(){
     }
     for (int i = 0; i < N; ++i) {
         if (!(vBint[i] == dBint[i]))
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestCopyConstructorAndOperatorEqu(){
-    std::cout << "Test 5 : Test for copy constructor and operator=...";
+bool TestCopyConstructorAndOperatorEqu(){
+    //std::cout << "Test 5 : Test for copy constructor and operator=...";
     sjtu::deque<long long> *pInt;
     pInt = new sjtu::deque<long long>;
     for (long long i = 0; i < N; ++i) {
@@ -94,18 +102,21 @@ void TestCopyConstructorAndOperatorEqu(){
     dualInt_oper = dInt;
     for (long long i = 0; i < N; ++i) {
         if (dualInt[i] != (*pInt)[i] || dualInt_oper[i] != (*pInt)[i] || dInt[i] != (*pInt)[i])
-            error();
+            //error();
+            return false;
     }
     dualInt_oper = dualInt_oper;
     delete pInt;
     for (long long i = 0; i < N; ++i){
         if (dualInt_oper[i] != dualInt[i])
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestIteratorSequenceAccess(){
-    std::cout << "Test 6 : Test for accessing the container in the order of the sequence with iterator...";
+bool TestIteratorSequenceAccess(){
+    //std::cout << "Test 6 : Test for accessing the container in the order of the sequence with iterator...";
     sjtu::deque<long long> dInt;
     for (long long i = 0; i < N; ++i) {
         dInt.push_back(i);
@@ -115,16 +126,19 @@ void TestIteratorSequenceAccess(){
 
     for (long long i = 0; i < N; ++i) {
         if (*it != dInt[i])
-            error();
+            //error();
+            return false;
         ++it;
     }
     if (it != dInt.end())
-        error();
+        //error();
+        return false;
 
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestIteratorRandomAccess(){
-    std::cout << "Test 7 : Test for accessing the container randomly with iterator...";
+bool TestIteratorRandomAccess(){
+    //std::cout << "Test 7 : Test for accessing the container randomly with iterator...";
     sjtu::deque<long long> dInt;
     std::vector<long long> vInt;
     for (long long i = 0; i < N; ++i) {
@@ -133,12 +147,14 @@ void TestIteratorRandomAccess(){
     }
     for (long long i = 0; i < N; ++i) {
         if (*(dInt.begin() + i) != vInt[i])
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestInsertAndErase(){
-    std::cout << "Test 8 : Test for insert() and erase()...";
+bool TestInsertAndErase(){
+    //std::cout << "Test 8 : Test for insert() and erase()...";
     sjtu::deque<long long> dInt;
     std::vector<long long> vInt;
     for (long long i = 0; i < N; ++i) {
@@ -157,12 +173,14 @@ void TestInsertAndErase(){
     dInt.erase(dInt.begin() + 6666);
     for (long long i = 0; i < N; ++i) {
         if (*(dInt.begin() + i) != vInt[i])
-            error();
+            //error();
+            return false;
     }
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 }
-void TestPopAndPush(){
-    std::cout << "Test 9 : Test for pop() and push()...";
+bool TestPopAndPush(){
+    //std::cout << "Test 9 : Test for pop() and push()...";
     sjtu::deque<long long> dInt, drInt;
     std::vector<long long> vInt;
     std::vector<long long> rInt;
@@ -184,27 +202,33 @@ void TestPopAndPush(){
     }
     for (size_t i = 0; i < 7055LL; ++i){
         if (dInt[i] != vInt[i])
-            error();
+            //error();
+            return false;
         if (drInt[7054LL - i] != rInt[i])
-            error();
+            //error();
+            return false;
     }
 
-    std::cout << "Correct." << std::endl;
+    //std::cout << "Correct." << std::endl;
+    return true;
 
 }
 
-int main(){
-    TestInteger();
-    TestIntegeragain();
-    TestMatrix();
-    TestBint();
-    TestCopyConstructorAndOperatorEqu();
-    TestIteratorSequenceAccess();
-    TestIteratorRandomAccess();
-    TestInsertAndErase();
-    TestPopAndPush();
-    std::cout << "Congratulations. " << std::endl;
-    std::cout << "Your submission has passed all correctness tests. " << std::endl;
-    std::cout << "Next mission is to use valgrind to ensure that there ain't any memory leaks in your deque. " << std::endl;
+int main() {
+    if (TestInteger() &&
+        TestIntegeragain() &&
+        TestMatrix() &&
+        TestBint() &&
+        TestCopyConstructorAndOperatorEqu() &&
+        TestIteratorSequenceAccess() &&
+        TestIteratorRandomAccess() &&
+        TestInsertAndErase() &&
+        TestPopAndPush())
+        std::cout << 1 << std::endl;
+    else
+        std::cout << 0 << std::endl;
+    //std::cout << "Congratulations. " << std::endl;
+    //std::cout << "Your submission has passed all correctness tests. " << std::endl;
+    //std::cout << "Next mission is to use valgrind to ensure that there ain't any memory leaks in your deque. " << std::endl;
     return 0;
 }
