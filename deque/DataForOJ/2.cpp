@@ -335,7 +335,7 @@ bool nomercyTest() {
 }
 
 int main() {
-    bool (*testFunc[])()= {
+    bool (*testFunc[])() = {
             pushTest, popTest, insertTest, iteratorTest,
             eraseTest, memoryTest,
             nomercyTest,
@@ -361,10 +361,10 @@ int main() {
 
     if (error)
         //printf("\nUnfortunately, you failed in this test\n\a");
-        std::cout<<0<<std::endl;
+        std::cout << 0 << std::endl;
     else
         //printf("\nCongratulations, your deque passed all the tests!\n");
-        std::cout<<1<<std::endl;
+        std::cout << 1 << std::endl;
 
     return 0;
 }

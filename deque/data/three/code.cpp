@@ -1,5 +1,4 @@
 #include "deque.hpp"
-
 #include <ctime>
 #include <iostream>
 #include <deque>
@@ -7,8 +6,6 @@
 #include <string>
 #include <vector>
 #include <ctime>
-
-//std::default_random_engine randnum(time(NULL));
 
 static const int N = 10000;
 static const int N_SPEED = 33500;
