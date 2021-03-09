@@ -1471,29 +1471,6 @@ std::pair<bool, double> bracketTimer() {
     return std::make_pair(true, timer.getTime() / 3);
 }
 
-static CheckerPair TEST_B[] = {
-        std::make_pair("push_back", pushBackTimer),
-        std::make_pair("pop_back", popBackTimer),
-        std::make_pair("push_front", pushFrontTimer),
-        std::make_pair("pop_front", popFrontTimer),
-        std::make_pair("front", frontTimer),
-        std::make_pair("back", backTimer),
-        std::make_pair("begin", beginTimer),
-        std::make_pair("end", endTimer),
-        std::make_pair("at", atTimer),
-        std::make_pair("[]", bracketTimer),
-        std::make_pair("iterator ++", iteratorAddOneTimer),
-        std::make_pair("iterator --", iteratorRedOneTimer),
-        std::make_pair("iterator +n", iteratorAddNTimer),
-        std::make_pair("iterator -n", iteratorRedNTimer),
-        std::make_pair("insert", insertTimer),
-        std::make_pair("erase", eraseTimer),
-        std::make_pair("Copy Constructor", copyConstructorTimer),
-        std::make_pair("Equal Operator", equalOperatorTimer),
-};
-
-
-
 int main() {
         //puts("Test Zone A: Correctness Testing...");
         int n = sizeof(TEST_A) / sizeof(CheckerPair);
