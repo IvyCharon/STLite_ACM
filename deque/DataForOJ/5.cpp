@@ -1,9 +1,10 @@
 #include <cstdio>
+#include <iostream>
 #include <queue>
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
-#include "deque.hpp"
+#include "src.hpp"
 
 
 bool need_to_check_throw = 1;
@@ -49,24 +50,28 @@ bool equal(){
     return 1;
 }
 
-void test1(){
-    printf("test1: push & pop                    ");
+bool test1(){
+    //printf("test1: push & pop                    ");
     for(int i=1;i<=N;i++){
         if(i % 10 <= 3) q.push_back(T(i)), stl.push_back(T(i));else
         if(i % 10 <= 7) q.push_front(T(i)), stl.push_front(T(i));else
         if(i % 10 <= 8) q.pop_back(), stl.pop_back();else
         if(i % 10 <= 9) q.pop_front(), stl.pop_front();
     }
-    if(!equal()){puts("Wrong Answer");return;}
+    if(!equal()){
+        //puts("Wrong Answer");
+        return false;
+    }
     while (!q.empty()){
         q.pop_back();
         stl.pop_back();
     }
-    puts("Accept");
+    //puts("Accept");
+    return true;
 }
 
-void test2(){
-    printf("test2: at & [] & front & back        ");
+bool test2(){
+    //printf("test2: at & [] & front & back        ");
     int flag = 0;
     try{
         int t = q.front().num();
@@ -75,7 +80,10 @@ void test2(){
     try{
         int t = q.back().num();
     }catch(...){flag ++;}
-    if(flag != 2 && need_to_check_throw){puts("Wrong Answer");return;}
+    if(flag != 2 && need_to_check_throw){
+        //puts("Wrong Answer");
+        return false;
+    }
     for(int i=1;i<=N;i++){
         if(i % 10 <= 3) q.push_back(T(i)), stl.push_back(T(i));else
         if(i % 10 <= 7) q.push_front(T(i)), stl.push_front(T(i));else
@@ -86,30 +94,51 @@ void test2(){
     try{
         int t = (q.at(q.size() + 100)).num();
     }catch(...){flag = 1;}
-    if(flag != 1 && need_to_check_throw){puts("Wrong Answer");return;}
+    if(flag != 1 && need_to_check_throw){
+        //puts("Wrong Answer");
+        return false;
+    }
     int num = q.size();
     for(int i=0;i<1000;i++)
     {
         int t = rand() % num;
-        if(q[t] != stl[t] || q.at(t) != stl.at(t)){puts("Wrong Answer");return;}
+        if(q[t] != stl[t] || q.at(t) != stl.at(t)){
+            //puts("Wrong Answer");
+            return false;
+        }
     }
-    if(q.front() != stl.front() || q.back() != stl.back()){puts("Wrong Answer");return;}
-    puts("Accept");
+    return !(q.front() != stl.front() || q.back() != stl.back());
+    //puts("Accept");
 }
 
-void test3(){
-    printf("test3: iterator operation            ");
+bool test3(){
+    //printf("test3: iterator operation            ");
     int num = q.size();
     for(int i =1 ; i <= 1000; i++)
     {
         int t1 = rand() % num;
         int t2 = rand() % num;
-        if(*(q.begin() + t1) != *(stl.begin() + t1)){puts("Wrong Answer");return;}
-        if(t2 && *(q.end() - t2) != *(stl.end() - t2)){puts("Wrong Answer");return;}
-        if((q.begin() + t1) - (q.begin() + t2) != (t1 - t2)){puts("Wrong Answer");return;}
+        if(*(q.begin() + t1) != *(stl.begin() + t1)){
+            //puts("Wrong Answer");
+            return false;
+        }
+        if(t2 && *(q.end() - t2) != *(stl.end() - t2)){
+            //puts("Wrong Answer");
+            return false;
+        }
+        if((q.begin() + t1) - (q.begin() + t2) != (t1 - t2)){
+            //puts("Wrong Answer");
+            return false;
+        }
     }
-    if((q.begin() + num) != q.end()) {puts("Wrong Answer");return;}
-    if((q.end() - num) != q.begin()) {puts("Wrong Answer");return;}
+    if((q.begin() + num) != q.end()) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    if((q.end() - num) != q.begin()){
+        //puts("Wrong Answer");
+        return false;
+    }
     bool flag=0;
     sjtu::deque<T> other;
     try{
@@ -117,48 +146,85 @@ void test3(){
     }catch(...){
         flag=1;
     }
-    if(!flag && need_to_check_throw) {puts("Wrong Answer");return;}
+    if(!flag && need_to_check_throw) {
+        //puts("Wrong Answer");
+        return false;
+    }
     it_q = q.begin();
     it_stl = stl.begin();
     for(int i=1;i<=10;i++){
         int t = rand() % (num / 10);
         it_q += t;
         it_stl += t;
-        if(*it_q != *it_stl) {puts("Wrong Answer");return;}
-        if(it_q -> num() != it_stl -> num()) {puts("Wrong Answer");return;}
+        if(*it_q != *it_stl){
+            //puts("Wrong Answer");
+            return false;
+        }
+        if(it_q -> num() != it_stl -> num()) {
+            //puts("Wrong Answer");
+            return false;
+        }
     }
     it_q = --q.end();
     it_stl = --stl.end();
-    if(*it_q != *it_stl) {puts("Wrong Answer");return;}
+    if(*it_q != *it_stl) {
+        //puts("Wrong Answer");
+        return false;
+    }
     for(int i=1;i<10;i++){
         int t = rand() % (num / 10);
         it_q -= t;
         it_stl -= t;
-        if(*it_q != *it_stl) {puts("Wrong Answer");return;}
+        if(*it_q != *it_stl){
+            //puts("Wrong Answer");
+            return false;
+        }
         it_q -> change(t);;
         it_stl -> change(t);
-        if(*it_q != *it_stl) {puts("Wrong Answer");return;}
+        if(*it_q != *it_stl) {
+            //puts("Wrong Answer");
+            return false;
+        }
     }
-    if(!equal()) {puts("Wrong Answer");return;}
-    if (!(q.begin() + 10 == q.begin() +5 + 6 - 1)) {puts("Wrong Answer");return;}
+    if(!equal()) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    if (!(q.begin() + 10 == q.begin() +5 + 6 - 1)) {
+        //puts("Wrong Answer");
+        return false;
+    }
     sjtu::deque<T> pp;
-    if(q.end() == pp.end()){puts("Wrong Answer");return;}
+    if(q.end() == pp.end()){
+        //puts("Wrong Answer");
+        return false;
+    }
 
     int t = rand() % (q.size() - 1);
     it_q = q.begin() + t;
     it_stl = stl.begin() + t;
     const sjtu::deque<T>::iterator it_q_const(++it_q);
     const std::deque<T>::iterator it_stl_const(++it_stl);
-    if(*it_q_const != *it_stl_const){puts("Wrong Answer");return;}
-    if(it_q_const -> num() != it_stl_const -> num()){puts("Wrong Answer");return;}
+    if(*it_q_const != *it_stl_const){
+        //puts("Wrong Answer");
+        return false;
+    }
+    if(it_q_const -> num() != it_stl_const -> num()){
+        //puts("Wrong Answer");
+        return false;
+    }
     it_q_const -> change(t);
     it_stl_const -> change(t);
-    if(!equal()){puts("Wrong Answer");return;}
-    puts("Accept");
+    if(!equal()){
+        //puts("Wrong Answer");
+        return false;
+    }
+    //puts("Accept");
+    return true;
 }
 
-void test4(){
-    printf("test4: const_iterator operation      ");
+bool test4(){
+    //printf("test4: const_iterator operation      ");
     const sjtu::deque<T> _q(q);
     const std::deque<T> _stl(stl);
     int num = _q.size();
@@ -166,30 +232,58 @@ void test4(){
     {
         int t1 = rand() % num;
         int t2 = rand() % num;
-        if(*(_q.cbegin() + t1) != *(_stl.cbegin() + t1)){puts("Wrong Answer");return;}
-        if(t2 && *(_q.cend() - t2) != *(_stl.cend() - t2)){puts("Wrong Answer");return;}
-        if((_q.cbegin() + t1) - (_q.cbegin() + t2) != (t1 - t2)){puts("Wrong Answer");return;}
+        if(*(_q.cbegin() + t1) != *(_stl.cbegin() + t1)){
+            //puts("Wrong Answer");
+            return false;
+        }
+        if(t2 && *(_q.cend() - t2) != *(_stl.cend() - t2)){
+            //puts("Wrong Answer");
+            return false;
+        }
+        if((_q.cbegin() + t1) - (_q.cbegin() + t2) != (t1 - t2)){
+            //puts("Wrong Answer");
+            return false;
+        }
     }
-    if((_q.cbegin() + num) != _q.cend()) {puts("Wrong Answer");return;}
-    if((_q.cend() - num) != _q.cbegin()) {puts("Wrong Answer");return;}
+    if((_q.cbegin() + num) != _q.cend()){
+        //puts("Wrong Answer");
+        return false;
+    }
+    if((_q.cend() - num) != _q.cbegin()) {
+        //puts("Wrong Answer");
+        return false;
+    }
     _it_q = _q.cbegin();
     _it_stl = _stl.cbegin();
     for(int i=1;i<=10;i++){
         int t = rand() % (num / 10);
         _it_q += t;
         _it_stl += t;
-        if(*_it_q != *_it_stl) {puts("Wrong Answer");return;}
-        if(_it_q -> num() != _it_stl -> num()) {puts("Wrong Answer");return;}
+        if(*_it_q != *_it_stl) {
+            //puts("Wrong Answer");
+            return false;
+        }
+        if(_it_q -> num() != _it_stl -> num()) {
+            //puts("Wrong Answer");
+            return false;
+        }
     }
     _it_q = --_q.cend();
     _it_stl = --_stl.cend();
-    if(*_it_q != *_it_stl) {puts("Wrong Answer");return;}
-    if (!(_q.cbegin() + 10 == _q.cbegin() +5 + 6 - 1)) {puts("Wrong Answer");return;}
-    puts("Accept");
+    if(*_it_q != *_it_stl) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    if (!(_q.cbegin() + 10 == _q.cbegin() +5 + 6 - 1)) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    //puts("Accept");
+    return true;
 }
 
-void test5(){
-    printf("test5: erase & insert                ");
+bool test5(){
+    //printf("test5: erase & insert                ");
     for(int i=1;i<=sqrt(N) && q.size()>=10;i++)
     {
         int t = rand() % (q.size() - 3);
@@ -202,10 +296,16 @@ void test5(){
         it_q -> change(t);
         it_stl -> change(t);
     }
-    if(!equal()) {puts("Wrong Answer");return;}
+    if(!equal()) {
+        //puts("Wrong Answer");
+        return false;
+    }
     it_q = q.erase(q.end() - 1);
     it_stl = stl.erase(stl.end() - 1);
-    if(it_q != q.end()){puts("Wrong Answer");return;}
+    if(it_q != q.end()){
+        //puts("Wrong Answer");
+        return false;
+    }
     for(int i = 1; i <= sqrt(N); i++)
     {
         int t = rand() % q.size();
@@ -226,19 +326,32 @@ void test5(){
     }
     it_q = q.insert(q.end(), T(66666));
     it_stl = stl.insert(stl.end(),T(66666));
-    if(it_q != q.end() - 1){puts("Wrong Answer");return;}
-    if(!equal()) {puts("Wrong Answer");return;}
-    puts("Accept");
+    if(it_q != q.end() - 1){
+        //puts("Wrong Answer");
+        return false;
+    }
+    if(!equal()) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    //puts("Accept");
+    return true;
 }
 
-void test6(){
-    printf("test6: clear & copy & assignment     ");
+bool test6(){
+    //printf("test6: clear & copy & assignment     ");
     sjtu::deque<T> p(q), r;
     r = q;
     q.clear();
-    if(!q.empty() || q.size() != 0 || q.begin()!=q.end()){puts("Wrong Answer");return;}
+    if(!q.empty() || q.size() != 0 || q.begin()!=q.end()){
+        //puts("Wrong Answer");
+        return false;
+    }
     q=q=q;
-    if(!q.empty() || q.size() != 0 || q.begin()!=q.end()){puts("Wrong Answer");return;}
+    if(!q.empty() || q.size() != 0 || q.begin()!=q.end()){
+        //puts("Wrong Answer");
+        return false;
+    }
     for(int i=1;i<=1000;i++)
     {
         int t = rand() % p.size();
@@ -253,17 +366,24 @@ void test6(){
     q = p;
     p.clear();
     q=q=q=q;
-    if(!equal()) {puts("Wrong Answer");return;}
+    if(!equal()) {
+        //puts("Wrong Answer");
+        return false;
+    }
     q.clear();
     q = r;
     r.clear();
     q=q=q=q;
-    if(!equal()) {puts("Wrong Answer");return;}
-    puts("Accept");
+    if(!equal()) {
+        //puts("Wrong Answer");
+        return false;
+    }
+    //puts("Accept");
+    return true;
 }
 
-void test7(){
-    printf("test7: complexity                    ");
+bool test7(){
+    //printf("test7: complexity                    ");
     int num = 400000;
     static sjtu::deque<T> q;
     for(int i = 0; i < num; i++) q.push_front(T(i));
@@ -310,17 +430,22 @@ void test7(){
             tmp = q[1000].num();
         }
     }
-    puts("Accept");
+    //puts("Accept");
+    return true;
 }
 
-int main(){
+int main() {
     srand(time(NULL));
-    puts("test start:");
-    test1();//push & pop
-    test2();//at & [] & front & back
-    test3();//iterator operation
-    test4();//const_iterator operation
-    test5();//erase & insert
-    test6();//clear & copy & assignment
-    test7();//complexity
+    //puts("test start:");
+    if (test1() &&
+        test2() &&
+        test3() &&
+        test4() &&
+        test5() &&
+        test6() &&
+        test7())
+        std::cout << 1 << std::endl;
+    else
+        std::cout << 0 << std::endl;
+    return 0;
 }
