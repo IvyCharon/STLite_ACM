@@ -10,7 +10,7 @@
 #include "class-integer.hpp"
 #include "class-matrix.hpp"
 #include "class-bint.hpp"
-#include "deque.hpp"
+#include "src.hpp"
 
 std::default_random_engine randnum(time(NULL)+7);
 static const int MAX_N = 10007;
@@ -335,7 +335,7 @@ bool nomercyTest() {
 }
 
 int main() {
-    bool (*testFunc[])()= {
+    bool (*testFunc[])() = {
             pushTest, popTest, insertTest, iteratorTest,
             eraseTest, memoryTest,
             nomercyTest,
@@ -349,19 +349,25 @@ int main() {
 
     bool error = false;
     for (int i = 0; i < sizeof(testFunc) / sizeof(testFunc[0]); i++) {
-        printf("%-40s", testMessage[i]);
+        //printf("%-40s", testMessage[i]);
         if (testFunc[i]())
-            printf("Passed\n");
+            //printf("Passed\n");
+            continue;
         else {
             error = true;
-            printf("Failed !!!\n");
+            //printf("Failed !!!\n");
         }
     }
 
     if (error)
-        printf("\nUnfortunately, you failed in this test\n\a");
+        //printf("\nUnfortunately, you failed in this test\n\a");
+        std::cout << 0 << std::endl;
     else
-        printf("\nCongratulations, your deque passed all the tests!\n");
+        //printf("\nCongratulations, your deque passed all the tests!\n");
+        std::cout << 1 << std::endl;
 
     return 0;
 }
+
+
+

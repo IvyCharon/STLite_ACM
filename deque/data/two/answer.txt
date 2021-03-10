@@ -3,8 +3,7 @@ Testing pop...                          Passed
 Testing insert...                       Passed
 Testing iterator...                     Passed
 Testing erase...                        Passed
-Testing copy and clear...               Passed
 Testing memory...                       Passed
-Final test without mercy...             Passed
+Final test...                           Passed
 
 Congratulations, your deque passed all the tests!
