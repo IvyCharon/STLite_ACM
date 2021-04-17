@@ -1,524 +1,622 @@
-// Provided by Weihong Lin
-
+#include <fstream>
+#include <cassert>
 #include <iostream>
+#include <vector>
+#include <algorithm>
 #include <map>
 #include <ctime>
-#include <queue>
-#include <cmath>
-#include <vector>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <algorithm>
+#include "exceptions.hpp"
 #include "map.hpp"
 
-using namespace std;
+const int MAXN = 5001;
 
-bool check1(){ //insert by []
-	int a, b;
-	sjtu::map<int, int> Q;
-	std::map<int, int> stdQ;
-	for(int i = 1; i <= 50000; i++){
-		a = rand(); b = rand();
-		if(!Q.count(a)){
-			Q[a] = b; stdQ[a] = b;
-		}
-	}
-	sjtu::map<int, int> :: value_type pp;
-	for(int i = 1; i <= 50000; i++){
-		a = rand(); b = rand();
-		if(!Q.count(a)){
-			Q.insert(sjtu::map<int, int> :: value_type(a, b));
-			stdQ.insert(std::map<int, int> :: value_type(a, b));
-		}
-	}
-	if(Q.size() != stdQ.size()) return 0;
-	sjtu::map<int, int>::iterator it;
-	std::map<int, int>::iterator stdit;
-	stdit = stdQ.begin();
-	for(it = Q.begin(); it != Q.end(); it++){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1;
-}
+enum Color{
+	Red, Green, Blue, Normal
+};
 
-bool check2(){//Q.insert
-	sjtu::map<int, int> Q;
-	sjtu::map<int, int> :: iterator it;
-	int num[51];
-	for(int i = 1; i <= 50; i++) num[i] =i;
-	for(int i = 1; i <= 100; i++) swap(num[rand() % 50 + 1], num[rand() % 50 + 1]);
-	for(int i = 1; i <= 50; i++) Q[num[i]] = rand();
-	int p = Q[6];
-	if(Q.insert(sjtu::map<int, int>::value_type(6, 9)).second) return 0;
-	it = Q.insert(sjtu::pair<int, int>(6, 9)).first;
-	if(it -> second != Q[6]) return 0;
-	
-	it = Q.insert(sjtu::map<int, int>::value_type(325, 666)).first;
-	if(it -> first != 325 || it -> second != 666) return 0;
-	return 1;
-}
-
-bool check3(){//find remove 
-	sjtu::map<int, int> Q;
-	std::map<int, int> stdQ;
-	int num[3001];
-	num[0] = 0;
-	for(int i = 1; i <= 3000; i++) num[i] = num[i - 1] + rand() % 325 + 1; 
-	for(int i = 1; i <= 6000; i++) swap(num[rand() % 3000 + 1], num[rand() % 3000 + 1]);
-	for(int i = 1; i <= 3000; i++){
-		int t = rand();
-		stdQ[num[i]] = t; Q[num[i]] = t;
+class TestCore{
+private:
+	const char *title;
+	const int id, total;
+	long dfn;
+	int counter, enter;
+public:	
+	TestCore(const char *title, const int &id, const int &total) : title(title), id(id), total(total), dfn(clock()), counter(0), enter(0) {
 	}
-	sjtu::map<int, int>::iterator it;
-	std::map<int, int>::iterator stdit;
-	for(int i = 1; i <= 6000; i++) swap(num[rand() % 3000 + 1], num[rand() % 3000 + 1]);
-	
-	for(int i = 1; i <= 1325; i++){
-		it = Q.find(num[i]); 
-		Q.erase(it);
-		stdit = stdQ.find(num[i]); stdQ.erase(stdit);
+	void init() {
+		static char tmp[200];
+		sprintf(tmp, "Test %d: %-55s", id, title);
+		printf("%-65s", tmp);
 	}
-	if(Q.size() != stdQ.size()) return 0;
-	it = Q.begin();
-	for(stdit = stdQ.begin(); stdit != stdQ.end(); stdit++){ 
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		it++;
+	void showMessage(const char *s, const Color &c = Normal) {
 	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
+	void showProgress() {
 	}
-	return 1;
-}
-
-bool check4(){//const_iterator
-	int a, b;
-	sjtu::map<int, int> Q;
-	std::map<int, int> stdQ;
-	for(int i = 1; i <= 30000; i++){
-		a = rand(); b = rand();
-		if(!Q.count(a)){
-			Q[a] = b; stdQ[a] = b;
-		}
+	void pass() {
+		showMessage("PASSED", Green);
+		printf("PASSED");
 	}
-	sjtu::map<int, int> :: iterator pt;
-	pt = Q.begin();
-	sjtu::map<int, int> :: const_iterator it(pt), itt;
-	std::map<int, int> :: const_iterator stdit;
-	stdit = stdQ.cbegin();
-	for(it = Q.cbegin(); it != Q.cend(); ++it){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
+	void fail() {
+		showMessage("FAILED", Red);
+		printf("FAILED");
 	}
-	stdit = --stdQ.cend();
-	for(it = --Q.cend(); it != Q.cbegin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	itt = --Q.cend();
-	if(it == itt) return 0;
-	return 1;
-}
-
-bool check5(){// insert && remove 
-	int a, b;
-	sjtu::map<int, int> Q;
-	std::map<int, int> stdQ;
-	for(int i = 1; i <= 3000; i++){
-		a = rand(); b = rand();
-		if(!Q.count(a)){
-			Q[a] = b; stdQ[a] = b;
-		}
-	}
-	while(!stdQ.empty()){
-		if(Q.begin() -> first != stdQ.begin() -> first || Q.begin() -> second != stdQ.begin() -> second) return 0; 
-		Q.erase(Q.begin());
-		stdQ.erase(stdQ.begin());
-	}
-	if(Q.begin() != Q.end()) return 0;
-	Q.clear(); stdQ.clear();
-	sjtu::map<int, int> :: iterator it;
-	std::map<int, int> :: iterator stdit;	
-	int num[3001], left[3001];
-	memset(left, 0, sizeof(left));
-	for(int i = 1; i <= 2000; i++) num[i] = i;
-	for(int i = 2001; i <= 3000; i++) num[i] = i - 2000;
-	for(int i = 1; i <= 6000; i++) swap(num[rand() % 3000 + 1], num[rand() % 3000 + 1]);
-	for(int i = 1; i <= 3000; i++){
-		if(left[num[i]]){
-			if(stdQ.count(num[i])){
-				it = Q.find(num[i]); Q.erase(it);
-				stdit = stdQ.find(num[i]); stdQ.erase(stdit);
-			}
-			else cout << "fuck you!" << endl;
-		}
-		else{
-			Q[num[i]] = num[i];
-			stdQ[num[i]] = num[i];
-			left[num[i]]++;
-		}
-	}
-	if(Q.size() != stdQ.size()) return 0;
-	it = Q.begin();
-	for(stdit = stdQ.begin(); stdit != stdQ.end(); stdit++){ 
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		++it;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); --it){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1;
-}
-
-bool check6(){ // copy test
-	int a, b;
-	sjtu::map<int, int> Q1;
-	std::map<int, int> stdQ;
-	sjtu::map<int, int> :: value_type pp;
-	for(int i = 1; i <= 10000; i++){
-		a = rand(); b = rand();
-		if(!Q1.count(a)){
-			Q1.insert(sjtu::pair<int, int>(a, b));
-			stdQ.insert(std::map<int, int> :: value_type(a, b));
-		}
-	}
-	sjtu::map<int, int> Q(Q1);
-	if(Q.size() != stdQ.size()) return 0;
-	sjtu::map<int, int>::iterator it;
-	std::map<int, int>::iterator stdit;
-	stdit = stdQ.begin();
-	for(it = Q.begin(); it != Q.end(); it++){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	while(!Q.empty()) Q.erase(Q.begin());
-	if(Q.size() != 0 || Q.begin() != Q.end()) return 0;
-	
-	stdit = stdQ.begin();
-	for(it = Q1.begin(); it != Q1.end(); it++){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q1.end(); it != Q1.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1; 
-}
-
-bool check7(){ //"=" operator 
-	int a, b;
-	sjtu::map<int, int> Q1;
-	std::map<int, int> stdQ;
-	sjtu::map<int, int> :: value_type pp;
-	for(int i = 1; i <= 10000; i++){
-		a = rand(); b = rand();
-		if(!Q1.count(a)){
-			Q1.insert(sjtu::map<int, int> :: value_type(a, b));
-			stdQ.insert(std::map<int, int> :: value_type(a, b));
-		}
-	}
-	sjtu::map<int, int> Q;
-	Q = Q1;
-	if(Q.size() != stdQ.size()) return 0;
-	sjtu::map<int, int>::iterator it;
-	std::map<int, int>::iterator stdit;
-	stdit = stdQ.begin();
-	for(it = Q.begin(); it != Q.end(); it++){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	while(!Q.empty()) Q.erase(Q.begin());
-	if(Q.size() != 0 || Q.begin() != Q.end()) return 0;
-	
-	stdit = stdQ.begin();
-	for(it = Q1.begin(); it != Q1.end(); it++){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q1.end(); it != Q1.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1; 
-}
-
-bool check8(){ //  clear && insert
-	int a, b;
-	sjtu::map<int, int> Q;
-	std::map<int, int> stdQ;
-	for(int i = 1; i <= 1000; i++){
-		a = rand(); b = rand();
-		if(!stdQ.count(a)){
-			if(Q.count(a)) return 0;
-			stdQ[a] = b; Q[a] = b;
-		}
-	}
-	Q.clear(); stdQ.clear();
-	if(Q.begin() != Q.end()) return 0;
-	if(Q.size()) return 0;
-	for(int i = 1; i <= 1000; i++){
-		a = rand(); b = rand();
-		if(!stdQ.count(a)){
-			if(Q.count(a)) return 0;
-			stdQ[a] = b; 
-			Q.insert(sjtu::map<int, int> :: value_type(a, b));
-		}
-	}
-	sjtu::map<int, int> :: iterator it;
-	std::map<int, int> :: iterator stdit;
-	stdit = stdQ.begin();
-	for(it = Q.begin(); it != Q.end(); ++it){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit++;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); it--){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1;
-}
-
-bool check9(){//just have fun!
-	sjtu::map<int, int> Q;
-	sjtu::map<int, int> :: iterator fun;
-	sjtu::map<int, int> :: const_iterator cfun;
-	fun = Q.find(325); cfun = Q.find(325);
-	sjtu::map<int, int> P(Q);
-	sjtu::map<int, int> O;
-	O = Q;
-	Q.clear();
-	if(Q.size()) return 0;
-	Q[3] = 5; Q[6] = 10;
-	const sjtu::map<int, int> Q_const(Q);
-	sjtu::map<int, int> :: const_iterator cit;
-	Q_const.at(3);
-	cit = Q_const.find(3);
-	O = Q;
-	sjtu::map<int, int> :: iterator itQ, itO;
-	sjtu::map<int, int> :: const_iterator citQ, citO;
-	itQ = Q.end(); itO = O.end();
-	citQ = Q.cend(); citO = O.cend();
-	if(itQ == itO) return 0; if(citQ == citO) return 0;
-	if(!(itQ != itO)) return 0; if(!(citQ != citO)) return 0;
-	if(itQ == citO) return 0; if(itO == citQ) return 0;
-	if(!(itQ != citO)) return 0; if(!(itO != citQ)) return 0;
-	if(!(citQ == itQ)) return 0; if(citQ != itQ) return 0; 
-	return 1;
-}
-
-class node{
-	private:
-	int num;
-	public:
-	node() : num(0) {}
-	node(int p) : num(p) {}
-	bool operator <(const node &b) const{
-		return num < b.num;
-	}
-	bool operator !=(const node &b) const{
-		return num != b.num;
+	~TestCore() {
+		puts("");
+		fflush(stdout);
 	}
 };
-bool check10(){//class writen by users
-	int a, b;
-	sjtu::map<node, int> Q;
-	std::map<node, int> stdQ;
-	for(int i = 1; i <= 3000; i++){
-		a = rand(); b = rand();
-		if(!Q.count(a)){
-			Q[node(a)] = b; stdQ[node(a)] = b;
-		}
-	}
-	while(!stdQ.empty()){
-		if(Q.begin() -> first != stdQ.begin() -> first || Q.begin() -> second != stdQ.begin() -> second) return 0; 
-		Q.erase(Q.begin());
-		stdQ.erase(stdQ.begin());
-	}
-	if(Q.begin() != Q.end()) return 0;
-	Q.clear(); stdQ.clear();
-	sjtu::map<node, int> :: iterator it;
-	std::map<node, int> :: iterator stdit;	
-	int num[3001], left[3001];
-	memset(left, 0, sizeof(left));
-	for(int i = 1; i <= 2000; i++) num[i] = i;
-	for(int i = 2001; i <= 3000; i++) num[i] = i - 2000;
-	for(int i = 1; i <= 6000; i++) swap(num[rand() % 3000 + 1], num[rand() % 3000 + 1]);
-	for(int i = 1; i <= 3000; i++){
-		if(left[num[i]]){
-			if(stdQ.count(node(num[i]))){
-				it = Q.find(node(num[i])); Q.erase(it);
-				stdit = stdQ.find(node(num[i])); stdQ.erase(stdit);
-			}
-			else cout << "fuck you!" << endl;
-		}
-		else{
-			Q[node(num[i])] = num[i];
-			stdQ[node(num[i])] = num[i];
-			left[num[i]]++;
-		}
-	}
-	if(Q.size() != stdQ.size()) return 0;
-	it = Q.begin();
-	for(stdit = stdQ.begin(); stdit != stdQ.end(); stdit++){ 
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		++it;
-	}
-	stdit = --stdQ.end();
-	for(it = --Q.end(); it != Q.begin(); --it){
-		if(stdit -> first != it -> first) return 0;
-		if(stdit -> second != (*it).second) return 0;
-		stdit--;
-	}
-	return 1;	
-}
 
-bool check11(){
-	sjtu::map<string, int> Q;
-	sjtu::map<string, int> :: iterator kit;
-	kit = Q.begin();
-	Q["aa"] = 5;
-	Q["bb"] = 16;
-	Q["cc"] = 20;
-	Q["lucky"] = 325;
-	Q["lwher"] = 666;
-	int p = Q.at("lwher");
-	if(p != 666) return 0;
-	p = Q.at("lucky");
-	if(p != 325) return 0;
-	int OK = 0;
-	try{
-		p = Q.at("dd");
-	}
-	catch(...) {OK++;}
-	sjtu::map<string, int> :: iterator it;
-	try{
-		it = Q.find("ok");
-		Q.erase(it);
-	}
-	catch(...) {OK++;}
-	sjtu::map<string, int> Q2(Q);
-	try{
-		it = Q2.find("cc");
-		Q.erase(it);
-	}
-	catch(...) {OK++;}
-	it = Q.find("cc");
-	Q.erase(it);
-	try{
-		p = Q.at("cc");
-	}
-	catch(...) {OK++;}	
-	return OK == 4;
-}
-
-/*bool check100(){
-	sjtu::map<int, int> Q;
-	Q[3] = 5;
-	Q[6] =10;
-	const sjtu::map<int, int> Q_const(Q);
-	sjtu::map<int, int> :: iterator it;
-	it = Q.begin();
-	//it -> first++;
-	//it = Q_const.begin();	
-	//it = Q_const.find(6);
-	sjtu::map<int, int> :: const_iterator cit;
-	cit = Q_const.find(3);
-	//cit -> second = 6;
-	//(cit -> second)++;
-	//cit -> fisrt = 10;
-	//++Q_const.at(6);
-}*/
-int A = 325, B = 2336, Last = 233, Mod = 1000007;
-
-int Rand(){
-	return Last = (A * Last + B) % Mod;
-}
-
-void easy_test(){
-	sjtu::map<int, int> Q;
-	Q.clear();
-	sjtu::map<int, int> :: iterator it;
-	int num[3001], left[3001];
-	memset(left, 0, sizeof(left));
-	for(int i = 1; i <= 2000; i++) num[i] = i;
-	for(int i = 2001; i <= 3000; i++) num[i] = i - 2000;
-	for(int i = 1; i <= 6000; i++) swap(num[Rand() % 3000 + 1], num[Rand() % 3000 + 1]);
-	for(int i = 1; i <= 3000; i++){
-		if(left[num[i]]){
-			if(Q.count(num[i])){
-				it = Q.find(num[i]); Q.erase(it);
-			}
-			else cout << "fuck you!" << endl;
-		}
-		else{
-			Q[num[i]] = num[i];
-			left[num[i]]++;
-		}
-	}
-	for(it = Q.begin(); it != Q.end(); ++it){ 
-		cout << it -> first << " "  << it -> second << " ";
-	}
-	cout << endl;
-}
-
-int main(){
-	//freopen("testans_advance.out", "w", stdout);
-	srand(time(NULL));
-	easy_test();
-	if(!check1()) cout << "Test 1 Failed..." << endl; else cout << "Test 1 Passed!" << endl;
-	if(!check2()) cout << "Test 2 Failed..." << endl; else cout << "Test 2 Passed!" << endl;
-	if(!check3()) cout << "Test 3 Failed..." << endl; else cout << "Test 3 Passed!" << endl;
-	if(!check4()) cout << "Test 4 Failed..." << endl; else cout << "Test 4 Passed!" << endl;
-	if(!check5()) cout << "Test 5 Failed..." << endl; else cout << "Test 5 Passed!" << endl;
-	if(!check6()) cout << "Test 6 Failed..." << endl; else cout << "Test 6 Passed!" << endl;
-	if(!check7()) cout << "Test 7 Failed..." << endl; else cout << "Test 7 Passed!" << endl;
-	if(!check8()) cout << "Test 8 Failed..." << endl; else cout << "Test 8 Passed!" << endl;
-	if(!check9()) cout << "Test 9 Failed..." << endl; else cout << "Test 9 Passed!" << endl;
-	if(!check10()) cout << "Test 10 Failed..." << endl; else cout << "Test 10 Passed!" << endl;
-	if(!check11()) cout << "Test 11 Failed..." << endl; else cout << "Test 11 Passed!" << endl;
+class IntA{
+public:
+	static int counter;
+	int val;
 	
+	IntA(int val) : val(val) {
+		counter++;
+	}
+
+	IntA(const IntA &rhs) {
+		val = rhs.val;
+		counter++;
+	}
+
+	IntA & operator = (const IntA &rhs) {
+		assert(false);
+	}
+	
+	bool operator ==(const IntA &rhs) {
+		return val == rhs.val;
+	}
+	friend bool operator < (const IntA &lhs, const IntA &rhs) {
+		return lhs.val > rhs.val;
+	}
+	
+	~IntA() {
+		counter--;
+	}
+};
+
+int IntA::counter = 0;
+
+class IntB{
+public:
+	int *val;
+	explicit IntB(int val = 0) : val(new int(val)) {
+	}
+	
+	IntB(const IntB &rhs) {
+		val = new int(*rhs.val);
+	}
+	
+	IntB & operator =(const IntB &rhs) {
+		if (this == &rhs) return *this;
+		delete this->val;
+		val = new int(*rhs.val);
+		return *this;
+	}
+	
+	bool operator !=(const IntB &rhs) const {
+		return *val != *rhs.val;
+	}
+	
+	bool operator ==(const IntB &rhs) const {
+		return *val == *rhs.val;
+	}
+	
+	~IntB() {
+		delete this->val;
+	}
+};
+
+struct Compare{
+	bool operator ()(const IntA &a, const IntA &b)const {
+		return a.val > b.val;
+	}
+};
+
+const std::vector<int> & generator(int n = MAXN) {
+	static std::vector<int> raw;
+	raw.clear();
+	for (int i = 0; i < n; i++) {
+		raw.push_back(rand());
+	}
+	return raw;
+}
+
+void tester1() {
+	TestCore console("Operator [] & Iterator traverse testing...", 1, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap[x] = tmp;
+			srcmap[x] = tmp;
+			//printf("insert(%d, %d)\n", x, tmp.val);
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				if (stdmap[ret[p]] != srcmap[ret[p]]) {
+					//std::cerr << ret[p] << " ";
+					//std::cerr << stdmap[ret[p]] << " " << srcmap[ret[p]] << std::endl;
+					console.fail();
+					return;
+				}
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.cbegin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester2() {
+	TestCore console("Insertion function testing...", 2, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				if (stdmap[ret[p]] != srcmap[ret[p]]) {
+					console.fail();
+					return;
+				}
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.begin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester3() {
+	TestCore console("Deletion & Find function testing...", 3, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			console.showProgress();
+		}
+		std::random_shuffle(ret.begin(), ret.end());
+		for (auto x : ret) {
+			if (stdmap.find(x) != stdmap.end()) {
+				srcmap.erase(srcmap.find(x));
+				stdmap.erase(stdmap.find(x));
+			}
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % ret.size();
+				if (stdmap.find(ret[p]) != stdmap.end()) {
+					if (stdmap[ret[p]] != srcmap[ret[p]]) {
+						console.fail();
+						return;
+					}
+				}
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester4() {
+	TestCore console("Error throwing A - Invalid Iterator testing...", 4, 0);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		++srcmap.end();
+	} catch (sjtu::exception error) {
+		try{
+			sjtu::map<IntA, IntB, Compare> srcmap;
+			--srcmap.begin();
+		} catch (sjtu::exception error) {
+			try{
+				sjtu::map<IntA, IntB, Compare> srcmap;
+				srcmap.end()++;
+			} catch (sjtu::exception error) {
+				try{
+					sjtu::map<IntA, IntB, Compare> srcmap;
+					srcmap.begin()--;
+				} catch (sjtu::exception error) {
+					console.pass();
+					return;
+				}
+			}
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.fail();
+}
+
+void tester5() {
+	TestCore console("Error throwing B - Invalid Const_Iterator testing...", 5, 0);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		++srcmap.cend();
+	} catch (sjtu::exception error) {
+		try{
+			sjtu::map<IntA, IntB, Compare> srcmap;
+			--srcmap.cbegin();
+		} catch (sjtu::exception error) {
+			try{
+				sjtu::map<IntA, IntB, Compare> srcmap;
+				srcmap.cend()++;
+			} catch (sjtu::exception error) {
+				try{
+					sjtu::map<IntA, IntB, Compare> srcmap;
+					srcmap.cbegin()--;
+				} catch (sjtu::exception error) {
+					console.pass();
+					return;
+				}
+			}
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.fail();
+}
+
+void tester6() {
+	TestCore console("Error throwing C - Invalid Index testing...", 6, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (auto x : ret) {
+			srcmap[x] = IntB(rand());
+			console.showProgress();
+		}
+		try{
+			sjtu::map<IntA, IntB, Compare> srcmap;
+			srcmap.at(IntA(-1)) = IntB(2);
+		} catch (...) {
+			console.pass();
+			return;
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.fail();
+}
+
+void tester7() {
+	const int MAXC = MAXN / 2;
+	TestCore console("Copy constructure testing...", 7, MAXN + MAXC + 2 * (MAXN - MAXC));
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			console.showProgress();
+		}
+		std::map<IntA, IntB, Compare> tmp1(stdmap);
+		sjtu::map<IntA, IntB, Compare> tmp2(srcmap);
+		std::random_shuffle(ret.begin(), ret.end());
+		for (int i = 0; i < MAXC; i++) {
+			if (stdmap.find(ret[i]) != stdmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+				stdmap.erase(stdmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.begin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+		
+		itB = tmp2.begin();
+		for (auto itA = tmp1.begin(); itA != tmp1.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester8() {
+	const int MAXC = MAXN / 2;
+	TestCore console("Operator = testing...", 8, MAXN + MAXC + 2 * (MAXN - MAXC));
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			console.showProgress();
+		}
+		std::map<IntA, IntB, Compare> tmp1;
+		tmp1 = stdmap;
+		sjtu::map<IntA, IntB, Compare> tmp2;
+		tmp2 = srcmap;
+		std::random_shuffle(ret.begin(), ret.end());
+		for (int i = 0; i < MAXC; i++) {
+			if (stdmap.find(ret[i]) != stdmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+				stdmap.erase(stdmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.cbegin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+		
+		itB = tmp2.cbegin();
+		for (auto itA = tmp1.begin(); itA != tmp1.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester9() {
+	TestCore console("At function testing...", 9, 2 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap[x] = tmp;
+			srcmap[x] = tmp;
+			for (int c = 0; c < 10; c++) {
+				int p = rand() % (i + 1);
+				if (stdmap.at(ret[p]) != srcmap.at(ret[p])) {
+					console.fail();
+					return;
+				}
+				tmp = IntB(rand());
+				stdmap.at(ret[p]) = tmp;
+				srcmap.at(ret[p]) = tmp;
+			}
+			console.showProgress();
+		}
+		auto itB = srcmap.cbegin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester10() {
+	TestCore console("Objects' independence testing...", 10, 6 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			stdmap.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			console.showProgress();
+		}
+		std::map<IntA, IntB, Compare> std1(stdmap), std2;
+		std2 = std1 = std1;
+		sjtu::map<IntA, IntB, Compare> src1(srcmap), src2;
+		src2 = src1 = src1;
+		for (int i = 0; i < (int)ret.size(); i++) {
+			if (stdmap.find(ret[i]) != stdmap.end()) {
+				srcmap.erase(srcmap.find(ret[i]));
+				stdmap.erase(stdmap.find(ret[i]));
+			}
+			console.showProgress();
+		}
+		ret = generator(MAXN);
+		for (int i = 0; i < (int)ret.size(); i++) {
+			auto x = ret[i];
+			IntB tmp = IntB(rand());
+			std1.insert(std::map<IntA, IntB, Compare>::value_type(x, tmp));
+			src1.insert(sjtu::map<IntA, IntB, Compare>::value_type(x, tmp));
+			console.showProgress();
+		}
+		
+		auto itB = srcmap.begin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+		
+		itB = src1.begin();
+		for (auto itA = std1.begin(); itA != std1.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+		
+		itB = src2.begin();
+		for (auto itA = std2.begin(); itA != std2.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+void tester11() {
+	const int MAXN = 10001;
+	TestCore console("Comprehensive testing...", 11, 3 * MAXN);
+	console.init();
+	auto ret = generator(MAXN);
+	try{
+		std::map<IntA, IntB, Compare> stdmap;
+		sjtu::map<IntA, IntB, Compare> srcmap;
+		for (int i = 0, cnt = 0; i < (int)ret.size(); i++, cnt++) {
+			int tmp = rand();
+			auto retA = stdmap.insert(std::map<IntA, IntB, Compare>::value_type(IntA(ret[i]), IntB(tmp)));
+			auto retB = srcmap.insert(sjtu::map<IntA, IntB, Compare>::value_type(IntA(ret[i]), IntB(tmp)));
+			console.showProgress();
+			if (!retA.second) {
+				cnt--;
+				ret[i] = -1;
+				console.showProgress();
+				continue;
+			}
+			if (rand() % 100 < 12 && cnt > 0) {
+				int p = 0;
+				while (ret[p] < 0) {
+					p = rand() % (i + 1);
+				}
+				stdmap.erase(stdmap.find(ret[p]));
+				srcmap.erase(srcmap.find(ret[p]));
+				ret[p] = -1;
+				cnt++;
+				console.showProgress();
+			}
+			if (stdmap.size() != srcmap.size()) {
+				console.fail();
+				return;
+			}
+		}
+		auto itB = srcmap.cbegin();
+		for (auto itA = stdmap.begin(); itA != stdmap.end(); ++itA, ++itB) {
+			if ((itA -> first).val != (itA -> first).val || (itB -> first).val != (itB -> first).val) {
+				console.fail();
+				return;
+			}
+			console.showProgress();
+		}
+		
+		const auto stdtmp(stdmap);
+		const auto srctmp(srcmap);
+		
+		std::map<IntA, IntB, Compare>::const_iterator citA = stdtmp.cbegin();
+		sjtu::map<IntA, IntB, Compare>::const_iterator citB = srctmp.cbegin();
+		
+		stdtmp.size();
+		srctmp.size();
+		
+		for (auto x : ret) {
+			if (x >= 0) {
+				if (stdmap.at(x) != srcmap.at(x)) {
+					console.fail();
+					return;
+				}
+				if (srctmp.count(x) == 0) {
+					console.fail();
+					return;
+				}
+			}
+			console.showProgress();
+		}
+	} catch(...) {
+		console.showMessage("Unknown error occured.", Blue);
+		return;
+	}
+	console.pass();
+}
+
+int main() {
+#ifdef SPECIAL
+	puts("AATree-Map Checker Version 1.2");
+#endif
+	tester1();
+	tester2();
+	tester3();
+	tester4();
+	tester5();
+	tester6();
+	tester7();
+	tester8();
+	tester9();
+	tester10();
+	tester11();
 	return 0;
 }
